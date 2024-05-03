@@ -1,0 +1,30 @@
+Login Image:
+Photo by <a href="https://unsplash.com/@chillysheep?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">James Baldwin</a> on <a href="https://unsplash.com/photos/tilt-shift-photography-of-shoes-b9vkGONY4eI?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
+
+
+
+Utils to extract
+1. login input fields
+2. wide ass purple button
+3. list item input fields
+4. topAppBar
+5. bottomAppBar
+6. regularSpacing. biggerSpacing.
+
+TO DO today
+1. finish list item ui
+2. extract ui elements
+3. finish crypto
+
+4. splash: exoplayer, imageUri can be firebase url
+
+TO DO larger
+1. finish ui
+2. write the backend
+login, register - firebase user management,
+manage items = firebase database
+send email
+3. extra features:
+search = tags, ml kit?
+feed algorithm = ml kit?
+audio

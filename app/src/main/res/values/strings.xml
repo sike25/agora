@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Agora</string>
+    <string name="desc_background">background</string>
+    <string name="text_email">EMAIL</string>
+    <string name="text_username">USERNAME</string>
+    <string name="text_password">PASSWORD</string>
+    <string name="text_login">LOGIN</string>
+    <string name="text_don_t_have_an_account_yet">Don\'t have an account yet?</string>
+    <string name="text_register">Register</string>
+    <string name="btn_register">REGISTER</string>
+</resources>

@@ -201,7 +201,7 @@ fun ListProductContent(
 
         // category
         Text(
-            text = "Category",
+            text = "Category is nice",
             fontFamily = interFamilyBold,
             fontSize = 18.sp,
             modifier =  Modifier

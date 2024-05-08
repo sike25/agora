@@ -35,6 +35,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import hu.ait.agora.R
 import hu.ait.agora.ui.theme.agoraDarkGrey
 import hu.ait.agora.ui.theme.agoraPurple
@@ -48,6 +49,7 @@ fun RegisterScreen(
     loginViewModel: LoginViewModel = viewModel(),
     onRegister: () -> Unit = {},
     onNavigateToLogin: () -> Unit = {},
+    navController: NavController,
 ) {
     Box (
         modifier = Modifier

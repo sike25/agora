@@ -18,6 +18,7 @@ import hu.ait.agora.ui.screen.list_product.ListProductScreen
 import hu.ait.agora.ui.screen.login.LoginScreen
 import hu.ait.agora.ui.screen.login.RegisterScreen
 import hu.ait.agora.ui.screen.product.ProductScreen
+import hu.ait.agora.ui.screen.profile.ProfileScreen
 import hu.ait.agora.ui.screen.search_results.SearchResultsScreen
 import hu.ait.agora.ui.screen.splash.SplashScreen
 import hu.ait.agora.ui.theme.AgoraTheme
@@ -42,31 +43,34 @@ class MainActivity : ComponentActivity() {
 fun ShopNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.ListProduct.route
+    startDestination: String = Screen.Splash.route
 ) {
     NavHost(
         modifier = modifier, navController = navController, startDestination = startDestination
     ) {
         composable(Screen.Splash.route) {
-            SplashScreen(navController = navController)
+            SplashScreen( navController = navController)
         }
         composable(Screen.Login.route) {
-            LoginScreen()
+            LoginScreen(navController = navController)
         }
         composable(Screen.Register.route) {
-            RegisterScreen()
-        }
-        composable(Screen.Feed.route) {
-            FeedScreen()
+            RegisterScreen(navController = navController)
         }
         composable(Screen.ListProduct.route) {
-            ListProductScreen()
+            ListProductScreen(navController = navController)
+        }
+        composable(Screen.Feed.route) {
+            FeedScreen(navController = navController)
         }
         composable(Screen.SearchResults.route) {
-            SearchResultsScreen()
+            SearchResultsScreen(navController = navController)
         }
         composable(Screen.Product.route) {
-            ProductScreen()
+            ProductScreen(navController = navController)
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen(navController = navController)
         }
     }
 }

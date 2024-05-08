@@ -13,174 +13,83 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import hu.ait.agora.ui.navigation.Screen
 import hu.ait.agora.ui.theme.agoraLightGrey
 import hu.ait.agora.ui.theme.agoraPurple
 import hu.ait.agora.ui.theme.agoraWhite
 import hu.ait.agora.ui.theme.interFamilyBold
 import hu.ait.agora.ui.theme.interFamilyRegular
+import hu.ait.agora.ui.utils.AgoraBottomNavBar
 import hu.ait.agora.ui.utils.EnterProductDetail
 import hu.ait.agora.ui.utils.Spinner
 import hu.ait.agora.ui.utils.TagChip
 
 
-
-data class NavItemState(
-    val title : String,
-    val selectedIcon : ImageVector,
-    val unselectedIcon : ImageVector,
-    val hasBadge : Boolean,
-    val badgeNum : Int
-
-)
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListProductScreen(
-    onNavigateToFeed: () -> Unit = {},
-    onPublish: () -> Unit = {},
     onUploadImage: () -> Unit = {},
+    navController: NavController,
 ) {
 
-    var bottomNavState by rememberSaveable {
-        mutableIntStateOf(0)
-    }
-    val navItems = listOf (
-        NavItemState (
-            title = "Feed",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
-            hasBadge = false,
-            badgeNum = 0,
-        ),
-        NavItemState (
-            title = "Inbox",
-            selectedIcon = Icons.Filled.Email,
-            unselectedIcon = Icons.Outlined.Email,
-            hasBadge = true,
-            badgeNum = 0,
-        ),
-        NavItemState (
-            title = "Sexy",
-            selectedIcon = Icons.Filled.Home,
-            unselectedIcon = Icons.Outlined.Home,
-            hasBadge = true,
-            badgeNum = 0,
-        ),
-    )
-
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "List Item",
-                        fontFamily = interFamilyRegular,
-                        fontSize = 25.sp,
-                        modifier = Modifier.padding(start = 110.dp)
-                    )
-                },
-                actions = {
-                    TextButton(onClick = { onPublish() }) {
-                        Text(
-                            text = "Publish",
-                            fontFamily = interFamilyBold,
-                            fontSize = 18.sp,
-                            color = agoraPurple,
-                            modifier = Modifier.padding(10.dp, top = 4.dp)
-                        )
-                    }
-                },
-                navigationIcon = {
-                    Icon(imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "back to login",
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clickable { onNavigateToFeed() })
-                },
-                modifier = Modifier.padding(10.dp)
-            )
-        },
-
-
-
-
-        bottomBar = {
-            NavigationBar {
-                navItems.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        selected = bottomNavState == index,
-                        onClick = { bottomNavState = index },
-                        icon = {
-                            BadgedBox(
-                                badge = {
-                                    if (item.hasBadge) Badge {}
-                                    if (item.badgeNum != 0) Badge {
-                                        Text( text = item.badgeNum.toString())
-                                    }
-                                }
-                            ) {
-                                Icon (
-                                    imageVector =  if (bottomNavState == index) item.selectedIcon else item.unselectedIcon,
-                                    contentDescription = item.title,
-                                )
-                            }
-                        },
-                        label = {}
-                    )
-                }
-            }
-        }
-
+        topBar = { ListProductTopAppBar() },
+        bottomBar = { AgoraBottomNavBar( navController = navController ) }
     ) { paddingValues ->
         ListProductContent(onUploadImage = onUploadImage, paddingValues = paddingValues)
     }
-
 }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ListProductTopAppBar() {
+    TopAppBar(
+        title = {
+            Text(
+                text = "List Item",
+                fontFamily = interFamilyRegular,
+                fontSize = 25.sp,
+                modifier = Modifier.padding(start = 110.dp)
+            )
+        },
+        actions = {
+            TextButton(onClick = { /* onPublish() */ }) {
+                Text(
+                    text = "Publish",
+                    fontFamily = interFamilyBold,
+                    fontSize = 18.sp,
+                    color = agoraPurple,
+                    modifier = Modifier.padding(10.dp, top = 4.dp)
+                )
+            }
+        },
+        navigationIcon = {
+            Icon(imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "back to login",
+                modifier = Modifier
+                    .size(40.dp)
+                    .clickable { /* onNavigateToFeed() */ })
+        },
+        modifier = Modifier.padding(10.dp)
+    )
+}
 
 
 

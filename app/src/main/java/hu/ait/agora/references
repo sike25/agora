@@ -10,10 +10,7 @@ Utils to extract
 4. topAppBar
 5. bottomAppBar
 
-TO DO today
-1. finish list item ui
-2. extract ui elements
-3. finish crypto
+
 
 4. splash: exoplayer, imageUri can be firebase url
 
@@ -32,3 +29,28 @@ listed items, purchase history
 search = tags, ml kit?
 feed algorithm = ml kit?
 audio
+
+
+ SearchBar(
+                query = query,
+                onQueryChange = { query = "love" },
+                onSearch = {},
+                placeholder = {
+                    Text(
+                        text = "Search",
+                        fontFamily = interFamilyRegular,
+                        fontSize = 18.sp,
+                        modifier = Modifier
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        contentDescription = "search icon"
+                    )
+                },
+                content = {},
+                active = true,
+                onActiveChange = {},
+            )

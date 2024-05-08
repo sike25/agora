@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import hu.ait.agora.ui.theme.agoraDarkGrey
 import hu.ait.agora.ui.theme.agoraPurple
 import hu.ait.agora.ui.theme.agoraWhite
@@ -43,6 +44,7 @@ fun LoginScreen(
     loginViewModel: LoginViewModel = viewModel(),
     onLoginSuccess: () -> Unit = {},
     onNavigateToRegister: () -> Unit = {},
+    navController: NavController,
 ) {
 
     var showPassword by rememberSaveable { mutableStateOf(false) }

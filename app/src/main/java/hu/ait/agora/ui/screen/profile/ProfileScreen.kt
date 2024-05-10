@@ -1,5 +1,6 @@
 package hu.ait.agora.ui.screen.profile
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +19,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,7 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import hu.ait.agora.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import hu.ait.agora.data.User
 import hu.ait.agora.ui.theme.agoraLightGrey
 import hu.ait.agora.ui.theme.agoraPurple
@@ -41,14 +47,54 @@ fun ProfileScreen(
     navController: NavController
 ) {
 
-    val user = User(
-        profilePicture = "https://firebasestorage.googleapis.com/v0/b/agora-hills.appspot.com/o/ambika.jpg?alt=media&token=a65d8e65-81c9-4617-8306-39b7080d2f6d",
-        name = "Barbie Mattel",
-        email = "barbie@gmail.com",
-        purchaseHistory = emptyList(),
-        firebaseUID = "",
-        listedItems = emptyList()
-    )
+    var user by remember {
+        mutableStateOf(
+            User(
+                profilePicture = "https://firebasestorage.googleapis.com/v0/b/agora-hills.appspot.com/o/ambika_mod.jpg?alt=media&token=d3df85eb-f7f1-41f7-9ced-ee79b944fcc6",
+                name = "Ambika Mod",
+                email = "Ambika is here because there was an error.",
+                purchaseHistory = emptyList(),
+                firebaseUID = "",
+                listedItems = emptyList()
+            )
+        )
+    }
+
+
+    try {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            val userCollection = FirebaseFirestore.getInstance().collection("users")
+            val userRef = userCollection.document(currentUser.uid)
+            userRef.get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val document = task.result
+                    if (document != null) {
+                        user = User(
+                                profilePicture = "https://firebasestorage.googleapis.com/v0/b/agora-hills.appspot.com/o/gump.jpg?alt=media&token=70dd2413-5201-4922-8b49-672af2912683",
+                                name = document.get("name") as String,
+                                email = document.get("email") as String,
+                                purchaseHistory = document.get("purchaseHistory") as List<String>? ?: emptyList(),
+                                firebaseUID = document.get("firebaseUID") as String,
+                                listedItems = document.get("listedItems") as List<String>? ?: emptyList(),
+                        )
+                    } else {
+                        throw IllegalStateException("No such document")
+                    }
+                } else {
+                    throw IllegalStateException("get failed with " + task.exception)
+                }
+            }
+        } else {
+            throw IllegalStateException("User not logged in")
+        }
+    } catch (e: Exception) {
+        Log.d("MY_TEST", "Error: ${e.message}")
+    }
+
+
+
 
 
     Scaffold(
@@ -94,7 +140,7 @@ fun ProfileScreenContent(
         Spacer(modifier = Modifier.height(40.dp))
 
         AsyncImage(
-            model =  R.drawable.gump,
+            model =  user.profilePicture,
             contentDescription = user.name,
             modifier = Modifier
                 .size(200.dp)

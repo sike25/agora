@@ -1,6 +1,7 @@
 package hu.ait.agora.ui.screen.feed
 
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,8 +16,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -38,6 +41,9 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import hu.ait.agora.R
 import hu.ait.agora.data.Product
+import hu.ait.agora.data.ProductWithId
+import hu.ait.agora.ui.navigation.Screen
+import hu.ait.agora.ui.theme.agoraBlack
 import hu.ait.agora.ui.theme.agoraLightGrey
 import hu.ait.agora.ui.theme.agoraWhite
 import hu.ait.agora.ui.theme.interFamilyBold
@@ -50,7 +56,8 @@ fun FeedScreen(
     navController: NavController,
     feedViewModel: FeedViewModel = viewModel(),
 ) {
-    val feedListState = feedViewModel.productFlow.collectAsState(initial = emptyList())
+    val feedListState = feedViewModel.productsList().collectAsState(initial = ProductsUIState.Init)
+
     Scaffold(
         topBar = {
             FeedTopAppBar()
@@ -64,7 +71,9 @@ fun FeedScreen(
 
         FeedContent(
             paddingValues = paddingValues,
-            feedList = feedListState.value
+            feedListState = feedListState.value,
+            navController = navController,
+            feedViewModel = feedViewModel
         )
     }
 }
@@ -72,18 +81,48 @@ fun FeedScreen(
 @Composable
 fun FeedContent(
     paddingValues: PaddingValues,
-    feedList: List<Product>
+    feedListState: ProductsUIState,
+    navController: NavController,
+    feedViewModel: FeedViewModel
 ) {
     Column(
         modifier = Modifier.padding(paddingValues)
     ) {
         Divider(color = agoraLightGrey, thickness = 1.dp)
-        LazyColumn(
-            modifier = Modifier,
-        ) {
-            items(feedList){
-                ProductCard(
-                    product = it,
+
+        when (feedListState) {
+            ProductsUIState.Init -> {
+                Text(
+                    text = "Initializing...",
+                    fontFamily = interFamilyRegular,
+                    fontSize = 16.sp,
+                    modifier = Modifier.weight(1f),
+                    color = agoraBlack
+                )
+            }
+            ProductsUIState.Loading -> {
+                CircularProgressIndicator()
+            }
+            is ProductsUIState.Success -> {
+                LazyColumn( modifier = Modifier) {
+                    items( feedListState.productList ){
+                        ProductCard(
+                            productWithId = it,
+                            navController = navController,
+                            feedViewModel = feedViewModel
+                        )
+                    }
+                }
+
+            }
+
+            is ProductsUIState.Error -> {
+                Text(
+                    text = "Error: ${feedListState.error}",
+                    fontFamily = interFamilyRegular,
+                    fontSize = 16.sp,
+                    modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colorScheme.error
                 )
             }
         }
@@ -93,15 +132,21 @@ fun FeedContent(
 
 @Composable
 fun ProductCard(
-    product: Product,
+    productWithId: ProductWithId,
+    feedViewModel: FeedViewModel,
+    navController: NavController,
 ) {
+    val product: Product = productWithId.product
     Card(
         colors = CardDefaults.cardColors(
             containerColor = agoraWhite,
         ),
         shape = RectangleShape,
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        modifier = Modifier
+        modifier = Modifier.clickable {
+            feedViewModel.setProductToShow(productWithId)
+            navController.navigate(Screen.Product.route)
+        }
     ) {
 
         Column {
@@ -112,7 +157,9 @@ fun ProductCard(
                 AsyncImage(
                     model =  R.drawable.gump,
                     contentDescription = product.description,
-                    modifier = Modifier.size(50.dp).clip(CircleShape),
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(CircleShape),
                     contentScale = ContentScale.Fit,
                 )
                 Spacer(modifier = Modifier.width(10.dp))

@@ -10,16 +10,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import hu.ait.agora.ui.navigation.Screen
 import hu.ait.agora.ui.screen.feed.FeedScreen
+import hu.ait.agora.ui.screen.feed.FeedViewModel
 import hu.ait.agora.ui.screen.list_product.ListProductScreen
 import hu.ait.agora.ui.screen.login.LoginScreen
 import hu.ait.agora.ui.screen.login.RegisterScreen
-import hu.ait.agora.ui.screen.product.ProductScreen
+import hu.ait.agora.ui.screen.feed.ProductScreen
 import hu.ait.agora.ui.screen.profile.ProfileScreen
 import hu.ait.agora.ui.screen.search_results.SearchResultsScreen
 import hu.ait.agora.ui.screen.splash.SplashScreen
@@ -49,9 +51,11 @@ fun ShopNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String = Screen.Splash.route
 ) {
+    val feedViewModel: FeedViewModel = viewModel()
     NavHost(
         modifier = modifier, navController = navController, startDestination = startDestination
     ) {
+
         composable(Screen.Splash.route) {
             SplashScreen( navController = navController)
         }
@@ -65,13 +69,13 @@ fun ShopNavHost(
             ListProductScreen(navController = navController)
         }
         composable(Screen.Feed.route) {
-            FeedScreen(navController = navController)
+            FeedScreen(navController = navController, feedViewModel = feedViewModel)
         }
         composable(Screen.SearchResults.route) {
             SearchResultsScreen(navController = navController)
         }
         composable(Screen.Product.route) {
-            ProductScreen(navController = navController)
+            ProductScreen(navController = navController, feedViewModel = feedViewModel)
         }
         composable(Screen.Profile.route) {
             ProfileScreen(navController = navController)

@@ -5,23 +5,26 @@ firebase database
 fix price field = done
 fix input error warning (smaller font) = done
 use category class = done
-implement feed
+implement feed = done
+implement product page = done
+implement profile page
+send email
+fix back buttons
 
 do search results ui
 and search functionality on title, desc and tags
    (remember input validation)
-send email
 successfully acquired page
 remove all MY_TEST log messages
 
 5.
-listed items, purchase history
+listed items (editing capabilities), purchase history (maybe summary stats)
 search = tags, ml kit?
 feed algorithm = ml kit?
-audio
 profile picture
 
 6.
+audio
 extend login to verify account, or use just amherst.edu,
 just make it production value
 implement chat interface

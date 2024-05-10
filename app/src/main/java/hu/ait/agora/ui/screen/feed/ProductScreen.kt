@@ -1,4 +1,4 @@
-package hu.ait.agora.ui.screen.product
+package hu.ait.agora.ui.screen.feed
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -26,11 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import hu.ait.agora.R
 import hu.ait.agora.data.Product
-import hu.ait.agora.data.User
 import hu.ait.agora.ui.theme.agoraLightGrey
 import hu.ait.agora.ui.theme.agoraPurple
 import hu.ait.agora.ui.theme.agoraWhite
@@ -42,19 +41,11 @@ import hu.ait.agora.ui.utils.AgoraBottomNavBar
 @Composable
 fun ProductScreen(
     navController: NavController,
+    feedViewModel: FeedViewModel = viewModel ()
 ) {
-    val product = Product (
-        image = "https://firebasestorage.googleapis.com/v0/b/agora-hills.appspot.com/o/ambika.jpg?alt=media&token=a65d8e65-81c9-4617-8306-39b7080d2f6d",
-        title = "Ramen",
-        description = "Yummy yummy and artisanal",
-        price = 0.99,
-        category = "Food",
-        owner = User (
-            name = "Barbie Mattel",
-            email = "oogieva25@amherst.edu",
-            firebaseUID = ""
-        )
-    )
+
+    val product = feedViewModel.getProductToShow().product
+
     Scaffold(
         topBar = {
             TopAppBar(

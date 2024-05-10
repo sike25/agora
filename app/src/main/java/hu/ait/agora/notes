@@ -1,0 +1,41 @@
+TODO:
+firebase database
+    a. fix cyclic property = done
+    b. when uploading a product, add it to the user's listed items = done
+fix price field = done
+fix input error warning (smaller font) = done
+use category class = done
+implement feed
+
+do search results ui
+and search functionality on title, desc and tags
+   (remember input validation)
+send email
+successfully acquired page
+remove all MY_TEST log messages
+
+5.
+listed items, purchase history
+search = tags, ml kit?
+feed algorithm = ml kit?
+audio
+profile picture
+
+6.
+extend login to verify account, or use just amherst.edu,
+just make it production value
+implement chat interface
+and transaction completion (two votes)
+if a product is sold (end all related transactions)
+implement functionality for uploading several images
+implement image size cap
+detect duplicate listing
+report bug button
+dynamic theming- dark mode
+landscape, yoruba
+refactor
+
+
+
+
+

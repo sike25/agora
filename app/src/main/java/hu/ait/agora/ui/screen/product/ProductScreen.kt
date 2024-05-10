@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import hu.ait.agora.R
 import hu.ait.agora.data.Product
+import hu.ait.agora.data.User
 import hu.ait.agora.ui.theme.agoraLightGrey
 import hu.ait.agora.ui.theme.agoraPurple
 import hu.ait.agora.ui.theme.agoraWhite
@@ -43,12 +44,16 @@ fun ProductScreen(
     navController: NavController,
 ) {
     val product = Product (
-        image = R.drawable.ramen,
+        image = "https://firebasestorage.googleapis.com/v0/b/agora-hills.appspot.com/o/ambika.jpg?alt=media&token=a65d8e65-81c9-4617-8306-39b7080d2f6d",
         title = "Ramen",
         description = "Yummy yummy and artisanal",
         price = 0.99,
-        owner = "Barbie Mattel"
-
+        category = "Food",
+        owner = User (
+            name = "Barbie Mattel",
+            email = "oogieva25@amherst.edu",
+            firebaseUID = ""
+        )
     )
     Scaffold(
         topBar = {
@@ -60,7 +65,7 @@ fun ProductScreen(
                         modifier = Modifier
                             .size(40.dp)
                             .padding(start = 10.dp)
-                            .clickable { /* onNavigateBack */ })
+                            .clickable { navController.popBackStack() })
                 },
                 modifier = Modifier.padding(10.dp)
             )
@@ -106,7 +111,7 @@ fun ProductScreenContent(
         Column( modifier = Modifier.padding(start = 10.dp) ) {
 
             Text(
-                text = product.owner,
+                text = product.owner.name,
                 fontFamily = interFamilyRegular,
                 fontSize = 14.sp,
                 modifier = Modifier.padding(start = 10.dp)

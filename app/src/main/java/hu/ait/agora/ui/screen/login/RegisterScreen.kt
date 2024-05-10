@@ -19,12 +19,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -42,13 +42,10 @@ import hu.ait.agora.ui.theme.agoraPurple
 import hu.ait.agora.ui.theme.agoraWhite
 import hu.ait.agora.ui.theme.interFamilyBold
 import hu.ait.agora.ui.theme.interFamilyLight
-import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
     loginViewModel: LoginViewModel = viewModel(),
-    onRegister: () -> Unit = {},
-    onNavigateToLogin: () -> Unit = {},
     navController: NavController,
 ) {
     Box (
@@ -57,7 +54,10 @@ fun RegisterScreen(
         var email by rememberSaveable { mutableStateOf("oogieva25@amherst.edu") }
         var password by rememberSaveable { mutableStateOf("password") }
         var username by rememberSaveable { mutableStateOf("Barbie Mattel") }
-        val coroutineScope = rememberCoroutineScope()
+
+        fun allInputsValid(): Boolean {
+            return (email != "") && (password != "") && (username != "")
+        }
 
         Image(
             painter = painterResource(id = R.drawable.register_image),
@@ -77,7 +77,7 @@ fun RegisterScreen(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "back to login",
                 tint = agoraWhite,
-                modifier = Modifier.size(60.dp).clickable { onNavigateToLogin() }
+                modifier = Modifier.size(60.dp).clickable { navController.popBackStack() }
             )
             Spacer(modifier = Modifier.height(70.dp))
             Text(
@@ -158,12 +158,12 @@ fun RegisterScreen(
 
             Button(
                 onClick = {
-                    coroutineScope.launch {
-                        val result = loginViewModel.loginUser(email, password)
-                        if (result?.user != null) {
-                            onRegister()
-                        }
+                    if (allInputsValid()) {
+                        loginViewModel.registerUser(username, email, password)
+                    } else {
+                        loginViewModel.registerUiState = RegisterUiState.Error("All inputs have not been supplied.")
                     }
+
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.95f)
@@ -174,6 +174,32 @@ fun RegisterScreen(
                 Text(stringResource(R.string.btn_register))
             }
 
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 50.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Spacer (modifier = Modifier.height(30.dp))
+                when (loginViewModel.registerUiState) {
+                    is RegisterUiState.Init -> {}
+                    is RegisterUiState.Loading -> CircularProgressIndicator()
+                    is RegisterUiState.Error -> {
+                        Text(
+                            text = "Error: ${(loginViewModel.registerUiState as RegisterUiState.Error).error }",
+                            color = agoraWhite
+                        )
+                    }
+                    is RegisterUiState.RegisterSuccess -> {
+                        Text(
+                            text = "Register OK",
+                            color = agoraWhite
+                        )
+                        navController.popBackStack()
+                    }
+                }
+            }
 
         }
 

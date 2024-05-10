@@ -16,13 +16,24 @@ import androidx.compose.ui.unit.sp
 import hu.ait.agora.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -30,8 +41,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import hu.ait.agora.ui.navigation.Screen
 import hu.ait.agora.ui.theme.agoraDarkGrey
 import hu.ait.agora.ui.theme.agoraPurple
 import hu.ait.agora.ui.theme.agoraWhite
@@ -39,11 +53,11 @@ import hu.ait.agora.ui.theme.interFamilyLight
 import hu.ait.agora.ui.theme.interFamilyRegular
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel = viewModel(),
     onLoginSuccess: () -> Unit = {},
-    onNavigateToRegister: () -> Unit = {},
     navController: NavController,
 ) {
 
@@ -51,6 +65,7 @@ fun LoginScreen(
     var email by rememberSaveable { mutableStateOf("oogieva25@amherst.edu") }
     var password by rememberSaveable { mutableStateOf("password") }
     val coroutineScope = rememberCoroutineScope()
+    val interactionSource = remember { MutableInteractionSource() }
 
     Column ( modifier = Modifier
         .fillMaxSize()
@@ -106,13 +121,41 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth(0.95f)
                     .background(agoraDarkGrey, shape = RoundedCornerShape(14.dp))
-                    .padding(15.dp)
                     .align(Alignment.CenterHorizontally),
                 singleLine = true,
                 textStyle = TextStyle(color = agoraWhite)
-            )
+            ) {
 
-            Spacer(modifier = Modifier.height(20.dp))
+                OutlinedTextFieldDefaults.DecorationBox(
+                    value = password,
+                    innerTextField = it,
+                    enabled = true,
+                    singleLine = true,
+                    visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                    interactionSource = interactionSource,
+                    // keep vertical paddings but change the horizontal
+                    trailingIcon = {
+                        IconButton(onClick = { showPassword = !showPassword }) {
+                            if (showPassword) {
+                                Icon(Icons.Default.Close, null)
+                            } else {
+                                Icon(Icons.Default.Info, null)
+                            }
+                        }
+                    },
+                    colors = OutlinedTextFieldDefaults.colors(),
+                    contentPadding = TextFieldDefaults.contentPaddingWithoutLabel(
+                        top = 2.dp,
+                        bottom = 2.dp,
+                    ),
+                    container = {
+                        OutlinedTextFieldDefaults.ContainerBox(enabled = true, isError = false, interactionSource, colors = OutlinedTextFieldDefaults.colors())
+                    },
+                )
+
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
 
             Column( modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 Button(
@@ -146,8 +189,36 @@ fun LoginScreen(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = interFamilyRegular,
-                        modifier = Modifier.clickable { onNavigateToRegister() }
+                        modifier = Modifier.clickable { navController.navigate(Screen.Register.route)}
                     )
+
+                }
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    when (loginViewModel.loginUiState) {
+                        is LoginUiState.Init -> {}
+                        is LoginUiState.Loading -> CircularProgressIndicator()
+                        is LoginUiState.LoginSuccess -> {
+                            Text(
+                                text = "Login OK", 
+                                color = agoraWhite
+                            )
+                            navController.navigate(Screen.Feed.route)
+                        }
+                        
+                        is LoginUiState.Error -> {
+                            Text(
+                                text = "Error: ${(loginViewModel.loginUiState as LoginUiState.Error).error }",
+                                color = agoraWhite,
+                                fontSize = 12.sp
+                            )
+                        }
+                        
+                    }
 
                 }
             }

@@ -42,10 +42,11 @@ fun ProfileScreen(
 ) {
 
     val user = User(
-        profilePicture = R.drawable.gump,
+        profilePicture = "https://firebasestorage.googleapis.com/v0/b/agora-hills.appspot.com/o/ambika.jpg?alt=media&token=a65d8e65-81c9-4617-8306-39b7080d2f6d",
         name = "Barbie Mattel",
         email = "barbie@gmail.com",
         purchaseHistory = emptyList(),
+        firebaseUID = "",
         listedItems = emptyList()
     )
 

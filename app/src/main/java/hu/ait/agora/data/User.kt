@@ -1,9 +1,10 @@
 package hu.ait.agora.data
 
 data class User (
-    val profilePicture: Int,
+    var profilePicture: String = "",
     val name: String,
     val email: String,
-    val purchaseHistory: List<Product>,
-    val listedItems: List<Product>
+    var purchaseHistory: List<Product> = emptyList(),
+    var listedItems: List<Product> = emptyList(),
+    val firebaseUID: String
 )

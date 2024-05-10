@@ -1,14 +1,20 @@
 package hu.ait.agora.data
 
 data class Product(
-    val image: Int,
+    val image: String,
     val title: String,
     val description: String,
-    //val category: Category,
+    val category: String,
     val price: Double,
-    val owner: String,
+    val owner: User,
+    val tags: List<String> = emptyList()
 )
 
-data class Category(
-    val name: String
-)
+enum class Category{
+    Fashion, Devices, Books, Household, Food, Others;
+    companion object {
+        fun getCategoryList(): List<String> {
+            return values().map { it.name }
+        }
+    }
+}

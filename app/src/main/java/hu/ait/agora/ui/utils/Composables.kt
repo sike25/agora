@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,7 +59,7 @@ fun EnterProductDetail(
     initialValue: String,
     label: String,
     onValueChange: (String) -> Unit,
-    imeAction: ImeAction
+    imeAction: ImeAction,
 ) {
     Text(
         text = label,
@@ -72,6 +73,31 @@ fun EnterProductDetail(
         onValueChange = { onValueChange(it) },
         singleLine = true,
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction),
+        modifier = Modifier.background(agoraWhite).fillMaxWidth(0.95f).padding(start = 50.dp, end = 50.dp),
+    )
+    Spacer(modifier = Modifier.height(25.dp))
+}
+
+
+@Composable
+fun EnterProductPrice (
+    initialValue: String,
+    label: String,
+    onValueChange: (String) -> Unit,
+    imeAction: ImeAction,
+) {
+    Text(
+        text = label,
+        fontFamily = interFamilyBold,
+        fontSize = 18.sp,
+        modifier =  Modifier.padding(start = 50.dp)
+    )
+    Spacer(modifier = Modifier.height(10.dp))
+    TextField(
+        value = initialValue,
+        onValueChange = { onValueChange(it) },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction, keyboardType = KeyboardType.Number),
         modifier = Modifier.background(agoraWhite).fillMaxWidth(0.95f).padding(start = 50.dp, end = 50.dp),
     )
     Spacer(modifier = Modifier.height(25.dp))
@@ -229,7 +255,6 @@ fun AgoraSearchBar(
             singleLine = true,
             enabled = true,
             interactionSource = interactionSource,
-            // keep vertical paddings but change the horizontal
             contentPadding = TextFieldDefaults.textFieldWithoutLabelPadding(
                 top = 2.dp, bottom = 2.dp
             ),

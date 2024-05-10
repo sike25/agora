@@ -61,6 +61,7 @@ fun FeedScreen(
             )
         }
     ) { paddingValues ->
+
         FeedContent(
             paddingValues = paddingValues,
             feedList = feedListState.value
@@ -117,7 +118,7 @@ fun ProductCard(
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Text(
-                    text = product.owner,
+                    text = product.owner.name,
                     fontFamily = interFamilyRegular,
                     fontSize = 16.sp,
                     modifier = Modifier.weight(1f)

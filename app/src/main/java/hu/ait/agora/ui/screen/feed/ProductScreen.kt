@@ -24,6 +24,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -70,7 +71,8 @@ fun ProductScreen(
     ) { paddingValues ->
         ProductScreenContent(
             paddingValues = paddingValues,
-            product = product
+            product = product,
+            feedViewModel = feedViewModel,
         )
     }
 }
@@ -78,9 +80,11 @@ fun ProductScreen(
 @Composable
 fun ProductScreenContent(
     paddingValues: PaddingValues,
-    product: Product
+    product: Product,
+    feedViewModel: FeedViewModel,
 ) {
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -132,7 +136,7 @@ fun ProductScreenContent(
 
             Button(
                 onClick = {
-                    /* handle email */
+                    feedViewModel.sendEmail(context)
                 },
                 modifier = Modifier
                     .fillMaxWidth(0.9f)

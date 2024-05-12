@@ -67,12 +67,10 @@ class ListScreenViewModel : ViewModel() {
 
             newImagesRef.putBytes(imageInBytes)
                 .addOnFailureListener { e ->
-                    Log.d("MY_TEST", "Image Upload Failed")
                     listProductUiState = ListProductUiState.ErrorDuringImageUpload(e.message)
                 }.addOnSuccessListener { _ ->
                     listProductUiState = ListProductUiState.ImageUploadSuccess
                     newImagesRef.downloadUrl.addOnCompleteListener { task ->
-                        Log.d("MY_TEST", "Image Upload Succeeded")
                         uploadProduct(
                             productImage = task.result.toString(),
                             productTitle = title,
@@ -113,12 +111,9 @@ class ListScreenViewModel : ViewModel() {
                 ),
             )
             addProductToFirebaseCollection(newProduct)
-            Log.d("MY_TEST", "Found user")
 
         } else {
-            Log.d("MY_TEST", "Can't find user")
-            listProductUiState =
-                ListProductUiState.ErrorDuringProductUpload("No authenticated user found")
+            listProductUiState = ListProductUiState.ErrorDuringProductUpload("No authenticated user found")
         }
 
     }
@@ -127,12 +122,10 @@ class ListScreenViewModel : ViewModel() {
         val productCollection = FirebaseFirestore.getInstance().collection("products")
         productCollection.add(newProduct)
             .addOnSuccessListener { documentReference ->
-                Log.d("MY_TEST", "Added product to Firebase")
                 updateUserWithListedItem(productId = documentReference.id)
                 listProductUiState = ListProductUiState.ProductUploadSuccess
             }
             .addOnFailureListener {
-                Log.d("MY_TEST", "Adding product to Firebase fails")
                 listProductUiState = ListProductUiState.ErrorDuringProductUpload("Upload failed")
             }
     }
@@ -144,22 +137,18 @@ class ListScreenViewModel : ViewModel() {
         userRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 if (task.result == null || !task.result.exists()) {
-                    Log.d("MY_STORE", "Current user does not exist in users collection.")
+                    Log.d("AGORA", "Current user does not exist in users collection.")
                 } else {
-                    Log.d(
-                        "MY_STORE",
-                        "Fetching user from users collection failed -> ",
-                        task.exception
+                    Log.d("AGORA", "Fetching user from users collection failed -> ", task.exception
                     )
                 }
             }
 
             userRef.update("listedItems", FieldValue.arrayUnion(productId))
                 .addOnSuccessListener {
-                    Log.d("MY_TEST", "Updated user's listed items")
+                    Log.d("AGORA", "Updated user's listed items")
                 }
                 .addOnFailureListener { e ->
-                    Log.d("MY_TEST", "Failed to update user's listed items")
                     listProductUiState =
                         ListProductUiState.ErrorDuringProductUpload("Error updating user with new product ID -> $e")
                 }

@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ShopNavHost()
+                    AgoraNavHost()
                 }
             }
         }
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
-fun ShopNavHost(
+fun AgoraNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = Screen.Splash.route

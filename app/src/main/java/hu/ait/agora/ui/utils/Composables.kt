@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -231,7 +232,7 @@ fun AgoraSearchBar(
     value: String = "",
     onValueChange: (String) -> Unit = {},
     placeHolder: String = "",
-
+    onDone: () -> Unit,
     ) {
 
     val interactionSource = remember { MutableInteractionSource() }
@@ -246,7 +247,14 @@ fun AgoraSearchBar(
             .background(agoraLightGrey, shape = RoundedCornerShape(9.dp))
             .height(40.dp),
 
-        textStyle = TextStyle(fontSize = 16.sp)
+        textStyle = TextStyle(fontSize = 16.sp),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onDone()
+            }
+        )
+
     ) {
         TextFieldDefaults.OutlinedTextFieldDecorationBox(
             value = value,

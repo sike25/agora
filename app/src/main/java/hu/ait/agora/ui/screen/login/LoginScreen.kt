@@ -62,7 +62,7 @@ fun LoginScreen(
 ) {
 
     var showPassword by rememberSaveable { mutableStateOf(false) }
-    var email by rememberSaveable { mutableStateOf("oogieva25@amherst.edu") }
+    var email by rememberSaveable { mutableStateOf("barbie@gmail.com") }
     var password by rememberSaveable { mutableStateOf("password") }
     val coroutineScope = rememberCoroutineScope()
     val interactionSource = remember { MutableInteractionSource() }

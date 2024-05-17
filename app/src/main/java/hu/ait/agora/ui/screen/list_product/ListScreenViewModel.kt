@@ -8,6 +8,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -32,7 +33,8 @@ class ListScreenViewModel : ViewModel() {
     var description by mutableStateOf("")
     var price by mutableStateOf("")
     var category by mutableStateOf("Food")
-    val tags = mutableListOf<String>()
+    var tags = mutableStateListOf<String>()
+        private set
 
     fun allInputsValid(): Boolean {
         val priceFieldIsValid = try {

@@ -51,7 +51,7 @@ fun RegisterScreen(
     Box (
         modifier = Modifier
     ) {
-        var email by rememberSaveable { mutableStateOf("oogieva25@amherst.edu") }
+        var email by rememberSaveable { mutableStateOf("barbie@gmail.com") }
         var password by rememberSaveable { mutableStateOf("password") }
         var username by rememberSaveable { mutableStateOf("Barbie Mattel") }
 

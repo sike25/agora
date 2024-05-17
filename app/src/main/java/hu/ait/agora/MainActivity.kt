@@ -16,14 +16,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import hu.ait.agora.ui.navigation.Screen
-import hu.ait.agora.ui.screen.feed.FeedScreen
-import hu.ait.agora.ui.screen.feed.FeedViewModel
+import hu.ait.agora.ui.screen.buy_product.FeedScreen
+import hu.ait.agora.ui.screen.buy_product.FeedViewModel
 import hu.ait.agora.ui.screen.list_product.ListProductScreen
 import hu.ait.agora.ui.screen.login.LoginScreen
 import hu.ait.agora.ui.screen.login.RegisterScreen
-import hu.ait.agora.ui.screen.feed.ProductScreen
+import hu.ait.agora.ui.screen.buy_product.ProductScreen
 import hu.ait.agora.ui.screen.profile.ProfileScreen
-import hu.ait.agora.ui.screen.search_results.SearchResultsScreen
+import hu.ait.agora.ui.screen.buy_product.SearchResultsScreen
 import hu.ait.agora.ui.screen.splash.SplashScreen
 import hu.ait.agora.ui.theme.AgoraTheme
 
@@ -72,7 +72,7 @@ fun AgoraNavHost(
             FeedScreen(navController = navController, feedViewModel = feedViewModel)
         }
         composable(Screen.SearchResults.route) {
-            SearchResultsScreen(navController = navController)
+            SearchResultsScreen(navController = navController, feedViewModel = feedViewModel)
         }
         composable(Screen.Product.route) {
             ProductScreen(navController = navController, feedViewModel = feedViewModel)

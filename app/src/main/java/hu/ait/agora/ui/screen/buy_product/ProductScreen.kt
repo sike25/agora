@@ -1,4 +1,4 @@
-package hu.ait.agora.ui.screen.feed
+package hu.ait.agora.ui.screen.buy_product
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

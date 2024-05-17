@@ -28,8 +28,8 @@ import hu.ait.agora.ui.theme.agoraBlack
 
 @Composable
 fun SplashScreen(navController: NavController) {
-    LottieSplashScreen(navController = navController)
-    // VideoSplashScreen(navController = navController)
+    // LottieSplashScreen(navController = navController)
+    VideoSplashScreen(navController = navController)
 }
 
 @Composable

@@ -1,4 +1,4 @@
-package hu.ait.agora.ui.screen.feed
+package hu.ait.agora.ui.screen.buy_product
 
 import android.content.Context
 import android.content.Intent
@@ -9,16 +9,34 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import hu.ait.agora.data.Product
 import hu.ait.agora.data.ProductWithId
 import hu.ait.agora.data.User
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class FeedViewModel : ViewModel() {
     // var productsUiState: ProductsUIState by mutableStateOf(ProductsUIState.Init)
+    private val _productsStateFlow = MutableStateFlow<ProductsUIState>(ProductsUIState.Loading)
+    val productsStateFlow: StateFlow<ProductsUIState> = _productsStateFlow.asStateFlow()
+
+    init { fetchProducts() }
+
+    private fun fetchProducts() = viewModelScope.launch {
+        productsList().collect { response ->
+            _productsStateFlow.value = response
+        }
+    }
+
+
 
     fun productsList() = callbackFlow {
         val snapshotListener =
@@ -28,6 +46,7 @@ class FeedViewModel : ViewModel() {
                         val productList = snapshot.toObjects(Product::class.java)
                         val productWithIdList = mutableListOf<ProductWithId>()
                         productList.forEachIndexed { index, product ->
+
                             productWithIdList.add(ProductWithId(snapshot.documents[index].id, product))
                         }
                         ProductsUIState.Success(productWithIdList)
@@ -42,6 +61,8 @@ class FeedViewModel : ViewModel() {
             snapshotListener.remove()
         }
     }
+
+
 
 
     // for product screen
@@ -106,6 +127,31 @@ class FeedViewModel : ViewModel() {
         catch (e: Exception){
             Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
         }
+    }
+
+
+
+    // for search
+    var query = "Query"
+    fun updateQuery(newQuery: String) {
+        query = newQuery
+    }
+
+    fun getSearchResultsList(): List<ProductWithId> {
+        val currentState = _productsStateFlow.value
+        if (query.isEmpty() || currentState !is ProductsUIState.Success) {
+            return emptyList()
+        }
+
+        val filtered = currentState.productList.filter { productWithId ->
+            val product = productWithId.product
+            product.title.contains(query, ignoreCase = true) ||
+            product.description.contains(query, ignoreCase = true) ||
+            product.tags.any { tag -> tag.contains(query, ignoreCase = true) }
+        }
+
+        return filtered
+
     }
 }
 

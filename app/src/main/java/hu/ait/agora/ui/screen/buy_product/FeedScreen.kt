@@ -1,4 +1,4 @@
-package hu.ait.agora.ui.screen.feed
+package hu.ait.agora.ui.screen.buy_product
 
 
 import androidx.compose.foundation.clickable
@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import hu.ait.agora.R
 import hu.ait.agora.data.Product
 import hu.ait.agora.data.ProductWithId
 import hu.ait.agora.ui.navigation.Screen
@@ -60,7 +59,10 @@ fun FeedScreen(
 
     Scaffold(
         topBar = {
-            FeedTopAppBar()
+            FeedTopAppBar(
+                feedViewModel = feedViewModel,
+                navController = navController,
+            )
         },
         bottomBar = {
             AgoraBottomNavBar(
@@ -203,7 +205,8 @@ fun ProductCard(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedTopAppBar(
-
+    feedViewModel: FeedViewModel,
+    navController: NavController,
 ) {
     var query by remember { mutableStateOf("") }
     TopAppBar(
@@ -212,7 +215,11 @@ fun FeedTopAppBar(
             AgoraSearchBar(
                 value = query,
                 onValueChange = {query = it},
-                placeHolder = "Search"
+                placeHolder = "Search",
+                onDone = {
+                    feedViewModel.updateQuery(query)
+                    navController.navigate(Screen.SearchResults.route)
+                }
             )
         },
         modifier = Modifier.padding(start = 30.dp, end = 30.dp, top = 8.dp, bottom = 10.dp)

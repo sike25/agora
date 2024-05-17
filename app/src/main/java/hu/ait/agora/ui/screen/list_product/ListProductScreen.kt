@@ -2,6 +2,7 @@ package hu.ait.agora.ui.screen.list_product
 
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -140,6 +141,7 @@ fun ListProductContent(
 ) {
     val scrollState = rememberScrollState()
     var presentTag by remember { mutableStateOf("") }
+    val tags by remember { mutableStateOf(listScreenViewModel.tags) }
 
     Column(
         modifier = Modifier
@@ -225,8 +227,10 @@ fun ListProductContent(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalItemSpacing = 8.dp,
             content = {
-                items(listScreenViewModel.tags.size) { tag ->
-                    TagChip(tag = listScreenViewModel.tags[tag], onRemoveItem = { listScreenViewModel.tags.removeAt(tag) })
+                items(tags.size) { tag ->
+                    TagChip(tag = tags[tag], onRemoveItem = {
+                        listScreenViewModel.tags.removeAt(tag)
+                    })
                 }
             },
             modifier = Modifier
@@ -237,6 +241,7 @@ fun ListProductContent(
         )
     }
 }
+
 
 
 

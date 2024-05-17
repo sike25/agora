@@ -155,7 +155,7 @@ fun ProductCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AsyncImage(
-                    model =  R.drawable.gump,
+                    model =  "https://firebasestorage.googleapis.com/v0/b/agora-hills.appspot.com/o/gump.jpg?alt=media&token=70dd2413-5201-4922-8b49-672af2912683",
                     contentDescription = product.description,
                     modifier = Modifier
                         .size(50.dp)

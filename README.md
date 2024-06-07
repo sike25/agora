@@ -5,8 +5,6 @@ Agora is a marketplace built in Android, for students to find and list items for
 The front-end of this project was built entirely in Jetpack Compose, and the back-end is supported by Firebase. Elements of the application include:
 1. **User Management:**   
    User management is provided by Firebase authentication. The first screen users are presented with after the splash is a login page, which also links (optionally) to a register page. User management is important for access, but also for functionality within the application-- in linking listings and purchases to particular users.
-
-
  
 3. **List Item:**  
    Users can list items for sale by uploading an image, filling in text fields for properties of the listing, select the item's category off a spanner menu and add tags (phrases which drive our search functionality). Saving the listing uploads it to Firebase which, has we said, provides this application's backend.
@@ -19,4 +17,8 @@ The front-end of this project was built entirely in Jetpack Compose, and the bac
    
 6. **Acquire Item:**
    Selecting a listing from the feed or search items result page takes you to a landing page which lists details of the item and an "Acquire" button. Clicking the "Acquire" button drafts from the email client configured on the device in use to the user who had listed the item.
+
+### Demo
+https://github.com/sike25/agora/assets/97693483/66c60b2c-e5c8-4f85-8fa7-f9cc973d43c9
+
    

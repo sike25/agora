@@ -6,7 +6,7 @@ The front-end of this project was built entirely in Jetpack Compose, and the bac
 1. **User Management:**   
    User management is provided by Firebase authentication. The first screen users are presented with after the splash is a login page, which also links (optionally) to a register page. User management is important for access, but also for functionality within the application-- in linking listings and purchases to particular users.
 
-![user_management](https://github.com/sike25/agora/assets/97693483/90686696-0c6b-4708-8fcc-2c91f6dc5aed)
+
  
 3. **List Item:**  
    Users can list items for sale by uploading an image, filling in text fields for properties of the listing, select the item's category off a spanner menu and add tags (phrases which drive our search functionality). Saving the listing uploads it to Firebase which, has we said, provides this application's backend.
